@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "zappa",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "projects": {
+    "zappa": {
+      "projectType": "application",
+      "root": "apps/zappa",
+      "sourceRoot": "apps/zappa/src",
+      "prefix": "zappa",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/zappa",
+            "index": "apps/zappa/src/index.html",
+            "main": "apps/zappa/src/main.ts",
+            "polyfills": "apps/zappa/src/polyfills.ts",
+            "tsConfig": "apps/zappa/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/zappa/src/favicon.ico",
+              "apps/zappa/src/assets",
+              "apps/zappa/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "apps/zappa/src/styles.scss",
+              "./node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/zappa/src/environments/environment.ts",
+                  "with": "apps/zappa/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "apps/zappa/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "zappa:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "zappa:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "zappa:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/zappa/src/**/*.ts",
+              "apps/zappa/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/zappa"
+          ],
+          "options": {
+            "jestConfig": "apps/zappa/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "zappa-e2e": {
+      "root": "apps/zappa-e2e",
+      "sourceRoot": "apps/zappa-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/zappa-e2e/cypress.json",
+            "tsConfig": "apps/zappa-e2e/tsconfig.e2e.json",
+            "devServerTarget": "zappa:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "zappa:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/zappa-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+@import "../../../node_modules/milligram-scss";
+
+html,
+body {
+  height: 100%;
+}
+
+table h4 {
+  margin: -9px 0 0 0;
+}
+
+.loading-screen {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.loading-screen-inner {
+  color: #666;
+  font-size: 2em;
+  line-height: 1.3em;
+  margin: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+.spotify-green {
+  color: #1DB954;
+}

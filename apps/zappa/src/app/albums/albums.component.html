@@ -1,0 +1,85 @@
+<main>
+  <div class="app-header">
+    <h2 style="margin: 0 0 0 10px;">Frank Zappa</h2>
+    <div class="display-mode-selector">
+      <a [class.active]="displayMode == 'list'" href="#" (click)="setDisplayMode('list')">
+        <i class="fa fa-th-list fa-2x"></i>
+      </a>
+      &nbsp;
+      <a [class.active]="displayMode == 'grid'" href="#" (click)="setDisplayMode('grid')">
+        <i class="fa fa-camera-retro fa-2x"></i>
+      </a>
+      &nbsp;
+    </div>
+  </div>
+
+  <main>
+    <div *ngIf="displayMode == 'grid'">
+      <div class="album-grid-item" *ngFor="let album of albums$ | async">
+        <div *ngIf="album.spotifyAlbumId" style="background-color: white;
+        background-color: rgba(255, 255, 255, 0.8); bottom: 7px; border-radius: 5px; right: 7px;
+         padding: 0 5px; position: absolute">
+            <a href="https://open.spotify.com/album/{{album.spotifyAlbumId}}" target="_blank"><i
+                  class="fa fa-spotify spotify-green"></i> Listen</a>
+        </div>
+        <img [defaultImage]="'assets/img/default-cover.jpg'"
+             [lazyLoad]="'assets/img/covers/'+album.uuid+'.jpg'">
+        <div *ngIf="album.owned" class="owned"><i class="fa fa-check-square-o fa-2x"></i></div>
+        <div class="year">{{album.year}}</div>
+      </div>
+    </div>
+
+    <div *ngIf="displayMode == 'list'">
+      <table>
+        <thead>
+        <tr>
+          <th></th>
+          <th>Album</th>
+          <th>Year</th>
+          <th>Owned</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let album of albums$ | async">
+
+          <td>
+            <img style="width: 70px; height: 70px;"
+                 [src]="'assets/img/default-cover.jpg'"
+                 [lazyLoad]="'assets/img/covers/'+album.uuid+'.jpg'">
+          </td>
+
+          <td>{{album.name}}</td>
+          <td>{{album.year}}</td>
+          <td>
+            <i [ngClass]="{'fa fa-check-square-o fa-2x': album.owned}"></i>
+          </td>
+
+          <td>
+            <h5 *ngIf="album.spotifyAlbumId">
+              <a href="https://open.spotify.com/album/{{album.spotifyAlbumId}}" target="_blank"><i
+                class="fa fa-spotify spotify-green"></i> Listen</a>
+            </h5>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <img
+    sizes="(max-width: 1400px) 100vw, 1400px"
+    srcset="
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_200.jpg 200w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_449.jpg 449w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_625.jpg 625w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_771.jpg 771w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_894.jpg 894w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1021.jpg 1021w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1146.jpg 1146w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1264.jpg 1264w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1371.jpg 1371w,
+assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1400.jpg 1400w"
+    src="assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1400.jpg"
+    alt="">
+</main>

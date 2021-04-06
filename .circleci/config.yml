@@ -1,0 +1,35 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    branches:
+      ignore:
+        - gh-pages
+    docker:
+      - image: cimg/node:15.11.0
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-dependency-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-dependency-cache-{{ .Branch }}-
+            - node-dependency-cache-
+
+      - run:
+          name: install-dependencies
+          command: npm install
+
+      - save_cache:
+          key: node-dependency-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+
+      - run:
+          name: angular-lint
+          command: npm run lint
+
+      - run:
+          name: build
+          command: npm run build
